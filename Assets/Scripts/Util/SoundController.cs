@@ -18,6 +18,10 @@ public class SoundController : Singleton<SoundController>
 
     public void Play(string clipName)
     {
+        if (m_AudioClips == null) {
+            return;
+        }
+
         AudioSource.PlayClipAtPoint(m_AudioClips[clipName], transform.position);
     }
 }
