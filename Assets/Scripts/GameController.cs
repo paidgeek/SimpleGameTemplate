@@ -53,7 +53,7 @@ public class GameController : Singleton<GameController>
         score = 0;
         isGameOver = false;
 
-        m_EventDispatcher.Invoke("StartGame");
+        m_EventDispatcher.Invoke(EventId.StartGame);
     }
 
     public void EndGame()
@@ -78,10 +78,27 @@ public class GameController : Singleton<GameController>
         gd.coins += m_Coins;
         gd.gamesPlayed++;
 
-        m_EventDispatcher.Invoke("EndGame");
+        m_EventDispatcher.Invoke(EventId.EndGame);
     }
 
-    private void ReportScore()
+    private void OnApplicationPause(bool paused)
+    {
+        if (paused && !isGameOver /*&& !m_IsShowingAd*/) {
+            Pause();
+        }
+    }
+
+    public void Pause()
+    {
+        m_EventDispatcher.Invoke(EventId.PauseGame);
+    }
+
+    public void Continue()
+    {
+        m_EventDispatcher.Invoke(EventId.ContinueGame);
+    }
+
+    public void ReportScore()
     {
 #if UNITY_ANDROID
         GooglePlayManager.ActionScoreSubmited = result =>

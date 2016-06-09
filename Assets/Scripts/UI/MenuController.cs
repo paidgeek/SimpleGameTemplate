@@ -28,9 +28,9 @@ public class MenuController : MonoBehaviour, IEventHook
 #endif
     }
 
-    public void OnInvoke(string eventId)
+    public void OnInvoke(EventId eventId)
     {
-        if (eventId == "StartGame") {
+        if (eventId == EventId.StartGame) {
             gameObject.SetActive(false);
         }
     }

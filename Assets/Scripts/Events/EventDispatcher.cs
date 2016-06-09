@@ -2,7 +2,7 @@
 
 public class EventDispatcher : MonoBehaviour
 {
-	public void Invoke(string eventId)
+	public void Invoke(EventId eventId)
 	{
 		var hooks = GetComponentsInChildren<IEventHook>(true);
 

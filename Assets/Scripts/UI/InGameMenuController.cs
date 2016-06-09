@@ -5,15 +5,19 @@ public class InGameMenuController : MonoBehaviour, IEventHook
     [SerializeField]
     private DataBindContext m_DataBindContext;
 
-    public void OnInvoke(string eventId)
+    public void OnInvoke(EventId eventId)
     {
-        if (eventId == "StartGame") {
+        if (eventId == EventId.StartGame) {
             gameObject.SetActive(true);
 
             m_DataBindContext["score"] = 0;
             m_DataBindContext["coins"] = 0;
-        } else if (eventId == "EndGame") {
+        } else if (eventId == EventId.EndGame) {
             gameObject.SetActive(false);
+        } else if (eventId == EventId.PauseGame) {
+            gameObject.SetActive(false);
+        } else if (eventId == EventId.ContinueGame) {
+            gameObject.SetActive(true);
         }
     }
 
@@ -35,5 +39,8 @@ public class InGameMenuController : MonoBehaviour, IEventHook
         m_DataBindContext["score"] = score;
     }
 
-    public void OnPauseClick() {}
+    public void OnPauseClick()
+    {
+        GameController.instance.Pause();
+    }
 }

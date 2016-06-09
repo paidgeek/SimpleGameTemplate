@@ -6,9 +6,9 @@ public class GameOverController : MonoBehaviour, IEventHook
     [SerializeField]
     private DataBindContext m_DataBindContext;
 
-    public void OnInvoke(string eventId)
+    public void OnInvoke(EventId eventId)
     {
-        if (eventId == "EndGame") {
+        if (eventId == EventId.EndGame) {
             gameObject.SetActive(true);
 
             var gc = GameController.instance;
