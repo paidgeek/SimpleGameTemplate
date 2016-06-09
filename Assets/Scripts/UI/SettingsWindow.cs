@@ -36,10 +36,9 @@ public class SettingsWindow : MonoBehaviour
 
     public void OnHighQualityClick()
     {
-        m_GameSettings.isHighQuality = !m_GameSettings;
+        m_GameSettings.isHighQuality = !m_GameSettings.isHighQuality;
         QualitySettings.SetQualityLevel(m_GameSettings.isHighQuality ? 1 : 0);
 
-        PlayerPrefs.Save();
         OnQualityChanged();
     }
 
