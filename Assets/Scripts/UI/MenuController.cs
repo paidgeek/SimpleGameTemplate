@@ -1,13 +1,9 @@
 ﻿using UnityEngine;
 
-public class MenuController : MonoBehaviour
+public class MenuController : MonoBehaviour, IEventHook
 {
+    [SerializeField]
     private DataBindContext m_DataBindContext;
-
-    private void Awake()
-    {
-        m_DataBindContext = FindObjectOfType<DataBindContext>();
-    }
 
     private void OnEnable()
     {
@@ -30,5 +26,12 @@ public class MenuController : MonoBehaviour
 #if UNITY_ANDROID
         GooglePlayManager.Instance.ShowLeaderBoard("leaderboard_high_scores");
 #endif
+    }
+
+    public void OnInvoke(string eventId)
+    {
+        if (eventId == "StartGame") {
+            gameObject.SetActive(false);
+        }
     }
 }
