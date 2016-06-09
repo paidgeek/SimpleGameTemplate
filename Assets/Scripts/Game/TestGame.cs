@@ -9,7 +9,7 @@ public class TestGame : MonoBehaviour
 
     public void AddCoins()
     {
-        GameController.instance.coins += 1;
+        GameController.instance.coins += 100;
     }
 
     public void EndGame()

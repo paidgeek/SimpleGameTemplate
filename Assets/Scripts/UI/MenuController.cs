@@ -5,6 +5,13 @@ public class MenuController : MonoBehaviour, IEventHook
     [SerializeField]
     private DataBindContext m_DataBindContext;
 
+    public void OnInvoke(EventId eventId)
+    {
+        if (eventId == EventId.StartGame) {
+            gameObject.SetActive(false);
+        }
+    }
+
     private void OnEnable()
     {
         var gd = GameData.instance;
@@ -26,12 +33,5 @@ public class MenuController : MonoBehaviour, IEventHook
 #if UNITY_ANDROID
         GooglePlayManager.Instance.ShowLeaderBoard("leaderboard_high_scores");
 #endif
-    }
-
-    public void OnInvoke(EventId eventId)
-    {
-        if (eventId == EventId.StartGame) {
-            gameObject.SetActive(false);
-        }
     }
 }

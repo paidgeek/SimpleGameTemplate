@@ -25,11 +25,11 @@ public class InitGame : MonoBehaviour
                     GooglePlayManager.ActionLeaderboardsLoaded = lbResult =>
                     {
                         if (lbResult.IsSucceeded) {
-                            GameData.instance.bestScore = (int) GooglePlayManager.Instance.GetLeaderBoard("CgkI19aihIAQEAIQAA")
-                                                                                 .GetCurrentPlayerScore(
-                                                                                     GPBoardTimeSpan.ALL_TIME,
-                                                                                     GPCollectionType.FRIENDS)
-                                                                                 .LongScore;
+                            var bestScore = (int) GooglePlayManager.Instance.GetLeaderBoard("CgkI19aihIAQEAIQAA")
+                                                                   .GetCurrentPlayerScore(GPBoardTimeSpan.ALL_TIME,
+                                                                       GPCollectionType.FRIENDS)
+                                                                   .LongScore;
+                            GameData.instance.bestScore = Mathf.Max(0, bestScore);
                         }
 
                         SceneManager.LoadScene("Main");

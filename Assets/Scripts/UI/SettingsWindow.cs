@@ -8,8 +8,10 @@ public class SettingsWindow : MonoBehaviour
     [SerializeField]
     private Image m_SoundIcon;
     [SerializeField]
-    private Image m_ConnectedButton;
-    private Color m_ConnectedColor;
+    private Image m_ConnectButton;
+    [SerializeField]
+    private Color m_ConnectedButtonTint;
+    private GameSettings m_GameSettings;
 
     [Header("Icons")]
     [SerializeField]
@@ -17,22 +19,10 @@ public class SettingsWindow : MonoBehaviour
     [SerializeField]
     private Sprite m_SoundOffIcon;
 
-    public bool isSoundOn
-    {
-        get { return PlayerPrefs.GetInt("SoundToggle", 1) == 1; }
-    }
-    public bool isHighQuality
-    {
-        get { return PlayerPrefs.GetInt("HighQuality", 1) == 1; }
-    }
-
-    private void Start()
-    {
-        m_ConnectedColor = m_ConnectedButton.color;
-    }
-
     private void OnEnable()
     {
+        m_GameSettings = GameSettings.instance;
+
         OnSoundChanged();
         OnLogInChanged();
         OnQualityChanged();
@@ -40,20 +30,14 @@ public class SettingsWindow : MonoBehaviour
 
     public void OnSoundClick()
     {
-        PlayerPrefs.SetInt("SoundToggle", isSoundOn ? 0 : 1);
-        PlayerPrefs.Save();
+        m_GameSettings.isSoundOn = !m_GameSettings.isSoundOn;
         OnSoundChanged();
     }
 
     public void OnHighQualityClick()
     {
-        if (isHighQuality) {
-            PlayerPrefs.SetInt("HighQuality", 0);
-        } else {
-            PlayerPrefs.SetInt("HighQuality", 1);
-        }
-
-        QualitySettings.SetQualityLevel(isHighQuality ? 1 : 0);
+        m_GameSettings.isHighQuality = !m_GameSettings;
+        QualitySettings.SetQualityLevel(m_GameSettings.isHighQuality ? 1 : 0);
 
         PlayerPrefs.Save();
         OnQualityChanged();
@@ -81,7 +65,7 @@ public class SettingsWindow : MonoBehaviour
 
     private void OnQualityChanged()
     {
-        if (isHighQuality) {
+        if (m_GameSettings.isHighQuality) {
             m_HighQualityIcon.gameObject.SetActive(true);
         } else {
             m_HighQualityIcon.gameObject.SetActive(false);
@@ -90,7 +74,7 @@ public class SettingsWindow : MonoBehaviour
 
     private void OnSoundChanged()
     {
-        if (isSoundOn) {
+        if (m_GameSettings.isSoundOn) {
             m_SoundIcon.sprite = m_SoundOnIcon;
         } else {
             m_SoundIcon.sprite = m_SoundOffIcon;
@@ -101,9 +85,9 @@ public class SettingsWindow : MonoBehaviour
     {
 #if UNITY_ANDROID
         if (GooglePlayConnection.Instance.IsConnected) {
-            m_ConnectedButton.color = m_ConnectedColor;
+            m_ConnectButton.color = m_ConnectedButtonTint;
         } else {
-            m_ConnectedButton.color = Color.white;
+            m_ConnectButton.color = Color.white;
         }
 #endif
     }

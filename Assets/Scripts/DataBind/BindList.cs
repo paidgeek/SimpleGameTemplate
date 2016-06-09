@@ -38,7 +38,7 @@ public class BindList : MonoBehaviour, IBindable
 					model.model = itemData;
 				}
 
-				for (var j = 0; j < properties.Length; j++) {
+			    for (var j = 0; j < properties.Length; j++) {
 					var p = properties[j];
 
 					m_Context[m_ItemKey + "." + p.Name] = p.GetValue(itemData, null);
