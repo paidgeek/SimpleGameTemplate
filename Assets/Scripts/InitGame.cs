@@ -11,9 +11,9 @@ public class InitGame : MonoBehaviour
         } else {
             GooglePlayConnection.ActionConnectionResultReceived = result =>
             {
-                Debug.Log("ActionConnectionResultReceived: " + result.code);
-
                 if (result.IsSuccess) {
+                    LoadScore();
+                    /*
                     if (PlayerPrefs.HasKey("UnreportedScore")) {
                         var score = PlayerPrefs.GetInt("UnreportedScore");
 
@@ -32,6 +32,7 @@ public class InitGame : MonoBehaviour
                     } else {
                         LoadScore();
                     }
+                    */
                 } else {
                     SceneManager.LoadScene("Main");
                 }
@@ -43,20 +44,44 @@ public class InitGame : MonoBehaviour
 
     private void LoadScore()
     {
+        var unreportedScore = 0;
+
+        if (PlayerPrefs.HasKey("UnreportedScore")) {
+            unreportedScore = PlayerPrefs.GetInt("UnreportedScore");
+            PlayerPrefs.DeleteKey("UnreportedScore");
+            PlayerPrefs.Save();
+        }
+
 #if UNITY_ANDROID
         GooglePlayManager.ActionLeaderboardsLoaded = lbResult =>
         {
-            Debug.Log("ActionLeaderboardsLoaded: " + lbResult.Response);
+            var onlineScore = 0;
+            var prefsScore = GameData.instance.bestScore;
 
             if (lbResult.IsSucceeded) {
-                var bestScore = (int)GooglePlayManager.Instance.GetLeaderBoard("CgkI19aihIAQEAIQAA")
+                onlineScore = Mathf.Max(0, (int)GooglePlayManager.Instance.GetLeaderBoard("CgkI19aihIAQEAIQAA")
                                                        .GetCurrentPlayerScore(GPBoardTimeSpan.ALL_TIME,
                                                            GPCollectionType.FRIENDS)
-                                                       .LongScore;
-                GameData.instance.bestScore = Mathf.Max(0, bestScore);
+                                                       .LongScore);
             }
 
-            SceneManager.LoadScene("Main");
+            var bestScore = Mathf.Max(unreportedScore, Mathf.Max(onlineScore, prefsScore));
+            GameData.instance.bestScore = bestScore;
+
+            if (unreportedScore > onlineScore) {
+                GooglePlayManager.ActionScoreSubmited = scoreResult =>
+                {
+                    if (!scoreResult.IsSucceeded) {
+                        PlayerPrefs.SetInt("UnreportedScore", bestScore);
+                        PlayerPrefs.Save();
+                    }
+
+                    SceneManager.LoadScene("Main");
+                };
+                GooglePlayManager.Instance.SubmitScore("leaderboard_high_scores", bestScore);
+            } else {
+                SceneManager.LoadScene("Main");
+            }
         };
         GooglePlayManager.Instance.LoadLeaderBoards();
 #endif

@@ -7,48 +7,53 @@ using UnityEngine.UI;
 [RequireComponent(typeof (Text))]
 public class BindText : MonoBehaviour, IBindable
 {
-	private string m_OriginalText;
-	private Text m_Text;
+    private string m_OriginalText;
+    private Text m_Text;
 
-	public string key {
-		get { return null; }
-	}
+    public string key
+    {
+        get { return null; }
+    }
 
-	public void Bind(DataContext context)
-	{
-		if (m_OriginalText == null) {
-			m_Text = GetComponent<Text>();
-			m_OriginalText = m_Text.text;
-		}
+    public void Bind(DataContext context)
+    {
+        if (m_OriginalText == null) {
+            m_Text = GetComponent<Text>();
+            m_OriginalText = m_Text.text;
+        }
 
-		var matches = Regex.Matches(m_OriginalText, @"\{\{[^}]*}}");
-		bool any = false;
+        var matches = Regex.Matches(m_OriginalText, @"\{\{[^}]*}}");
+        var any = false;
 
-		for (var i = 0; i < matches.Count; i++) {
-			var m = matches[i];
-			var key = m.Value.Substring(2, m.Value.Length - 4).Split(':')[0];
+        for (var i = 0; i < matches.Count; i++) {
+            var m = matches[i];
+            var key = m.Value.Substring(2, m.Value.Length - 4)
+                       .Split(':')[0];
 
-			if (context.ContainsKey(key)) {
-				any = true;
-				break;
-			}
-		}
+            if (context.ContainsKey(key)) {
+                any = true;
+                break;
+            }
+        }
 
-		if (!any) {
-			return;
-		}
+        if (!any) {
+            return;
+        }
 
-		m_Text.text = Regex.Replace(m_OriginalText, @"\{\{[^}]*}}", m => {
-			var target = m.Value.Substring(2, m.Value.Length - 4).Split(':');
-			var key = target[0];
+        m_Text.text = Regex.Replace(m_OriginalText, @"\{\{[^}]*}}", m =>
+        {
+            var target = m.Value.Substring(2, m.Value.Length - 4)
+                          .Split(':');
+            var key = target[0];
+            var val = context[key];
 
-			if (target.Length == 2 && context[key] is IFormattable) {
-				var format = target[1];
+            if (target.Length == 2 && context[key] is IFormattable) {
+                var format = target[1];
 
-				return ((IFormattable) context[key]).ToString(format, CultureInfo.CurrentCulture);
-			}
+                return ((IFormattable)val).ToString(format, CultureInfo.CurrentCulture);
+            }
 
-			return context[key].ToString();
-		});
-	}
+            return val.ToString();
+        });
+    }
 }

@@ -38,6 +38,13 @@ public class GameOverWindow : MonoBehaviour, IEventHook
         PlayerPrefs.Save();
     }
 
+    public void OnRateClick()
+    {
+#if UNITY_ANDROID
+        Application.OpenURL("market://details?id=" + Application.bundleIdentifier);
+#endif
+    }
+
     public void OnShareClick()
     {
         StartCoroutine(ShareCoroutine());
@@ -59,9 +66,11 @@ public class GameOverWindow : MonoBehaviour, IEventHook
         texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
         texture.Apply();
 
-        var message = "OMG! I scored " + GameController.instance.score.ToString("N0") +
-                      " in #SimpleGameTemplate! Can you beat my score? https://www.google.com";
+#if UNITY_ANDROID
+        var message = string.Format(Localization.GetText("Share Message"), GameController.instance.score.ToString("N0"),
+            "market://details?id=" + Application.bundleIdentifier);
         AndroidSocialGate.StartShareIntent("SimpleGameTemplate", message, texture);
+#endif
 
         m_ShareScoreView.gameObject.SetActive(false);
 

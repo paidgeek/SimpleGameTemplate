@@ -4,6 +4,7 @@ using UnityEngine;
 public class SoundController : Singleton<SoundController>
 {
     private IDictionary<string, AudioClip> m_AudioClips;
+    private AudioSource m_AudioSource;
 
     private void Start()
     {
@@ -14,14 +15,17 @@ public class SoundController : Singleton<SoundController>
             var clip = clips[i];
             m_AudioClips[clip.name] = clip;
         }
+
+        m_AudioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void Play(string clipName)
     {
-        if (m_AudioClips == null) {
+        if (m_AudioClips == null || !GameSettings.instance.isSoundOn) {
             return;
         }
 
-        AudioSource.PlayClipAtPoint(m_AudioClips[clipName], transform.position);
+        m_AudioSource.clip = m_AudioClips[clipName];
+        m_AudioSource.Play();
     }
 }

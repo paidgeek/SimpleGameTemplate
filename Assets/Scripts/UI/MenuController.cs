@@ -5,9 +5,9 @@ public class MenuController : MonoBehaviour, IEventHook
     [SerializeField]
     private DataBindContext m_DataBindContext;
     [SerializeField]
-    private string m_TwitterUrl;
+    private string m_TwitterUserId;
     [SerializeField]
-    private string m_FacebookUrl;
+    private string m_FacebookPageId;
 
     public void OnInvoke(EventId eventId)
     {
@@ -41,11 +41,19 @@ public class MenuController : MonoBehaviour, IEventHook
 
     public void OnTwitterClick()
     {
-        Application.OpenURL(m_TwitterUrl);
+        if (Util.IsAppInstalled("com.twitter.android")) {
+            Application.OpenURL("twitter://user?user_id=" + m_TwitterUserId);
+        } else {
+            Application.OpenURL("https://twitter.com/intent/user?user_id=" + m_TwitterUserId);
+        }
     }
 
     public void OnFacebookClick()
     {
-        Application.OpenURL(m_FacebookUrl);
+        if (Util.IsAppInstalled("com.facebook.katana")) {
+            Application.OpenURL("fb://page/" + m_FacebookPageId);
+        } else {
+            Application.OpenURL("https://www.facebook.com/" + m_FacebookPageId);
+        }
     }
 }
