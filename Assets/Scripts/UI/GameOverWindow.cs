@@ -31,6 +31,11 @@ public class GameOverWindow : MonoBehaviour, IEventHook
         }
     }
 
+    private void OnApplicationPause(bool paused)
+    {
+        m_LastAdTime = Time.time;
+    }
+
     public void OnHomeClick()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene()

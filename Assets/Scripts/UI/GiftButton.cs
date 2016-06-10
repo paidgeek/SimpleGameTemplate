@@ -14,41 +14,58 @@ public class GiftButton : MonoBehaviour
     private void OnEnable()
     {
         m_Button.SetActive(false);
-        Chartboost.cacheRewardedVideo(CBLocation.GameOver);
+        Chartboost.cacheRewardedVideo(CBLocation.Default);
         StartCoroutine(LoadAdCoroutine());
     }
 
     public void OnClick()
     {
-        if (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.GameOver)) {
+        if (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.Default)) {
             return;
         }
 
         m_Button.SetActive(false);
+        var unityReady = Advertisement.IsReady("rewardedVideoZone");
+        var cbReady = Chartboost.hasRewardedVideo(CBLocation.Default);
 
-        if (Chartboost.hasRewardedVideo(CBLocation.GameOver)) {
-            Chartboost.willDisplayVideo = location =>
-            {
-                // TODO: mute sounds
-            };
-            Chartboost.didCompleteRewardedVideo = (location, reward) =>
-            {
-                OnCompleteVideo();
-            };
-            Chartboost.showRewardedVideo(CBLocation.GameOver);
-            Chartboost.cacheRewardedVideo(CBLocation.GameOver);
+        if (unityReady && cbReady) {
+            if (Random.Range(0, 2) == 0) {
+                ShowUnityAd();
+            } else {
+                ShowChartboostAd();
+            }
+        } else if (unityReady) {
+            ShowUnityAd();
         } else {
-            var opts = new ShowOptions();
-            opts.resultCallback = result =>
-            {
-                if (result == ShowResult.Finished) {
-                    OnCompleteVideo();
-                }
-
-                StartCoroutine(LoadAdCoroutine());
-            };
-            Advertisement.Show("rewardedVideoZone", opts);
+            ShowChartboostAd();
         }
+    }
+
+    private void ShowUnityAd()
+    {
+        var opts = new ShowOptions();
+        opts.resultCallback = result =>
+        {
+            if (result == ShowResult.Finished) {
+                OnCompleteVideo();
+            }
+        };
+        Advertisement.Show("rewardedVideoZone", opts);
+    }
+
+    private void ShowChartboostAd()
+    {
+        Chartboost.willDisplayVideo = location =>
+        {
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+        };
+        Chartboost.didCompleteRewardedVideo = (location, reward) =>
+        {
+            Screen.orientation = ScreenOrientation.Portrait;
+            OnCompleteVideo();
+        };
+        Chartboost.showRewardedVideo(CBLocation.Default);
+        Chartboost.cacheRewardedVideo(CBLocation.Default);
     }
 
     private void OnCompleteVideo()
@@ -59,7 +76,7 @@ public class GiftButton : MonoBehaviour
 
     private IEnumerator LoadAdCoroutine()
     {
-        while (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.GameOver)) {
+        while (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.Default)) {
             yield return new WaitForSeconds(0.5f);
         }
 
