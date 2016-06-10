@@ -59,10 +59,11 @@ public class InitGame : MonoBehaviour
             var prefsScore = GameData.instance.bestScore;
 
             if (lbResult.IsSucceeded) {
-                onlineScore = Mathf.Max(0, (int)GooglePlayManager.Instance.GetLeaderBoard("CgkI19aihIAQEAIQAA")
-                                                       .GetCurrentPlayerScore(GPBoardTimeSpan.ALL_TIME,
-                                                           GPCollectionType.FRIENDS)
-                                                       .LongScore);
+                onlineScore = Mathf.Max(0, (int) GooglePlayManager.Instance.GetLeaderBoard("CgkI19aihIAQEAIQAA")
+                                                                  .GetCurrentPlayerScore(GPBoardTimeSpan.ALL_TIME,
+                                                                      GPCollectionType.GLOBAL)
+                                                                  .LongScore);
+                Debug.Log("CgkI19aihIAQEAIQAA: " + onlineScore);
             }
 
             var bestScore = Mathf.Max(unreportedScore, Mathf.Max(onlineScore, prefsScore));

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,8 +7,6 @@ public class GameOverWindow : MonoBehaviour, IEventHook
 {
     [SerializeField]
     private DataBindContext m_DataBindContext;
-    [SerializeField]
-    private RectTransform m_ShareScoreView;
 
     public void OnInvoke(EventId eventId)
     {
@@ -52,28 +51,14 @@ public class GameOverWindow : MonoBehaviour, IEventHook
 
     private IEnumerator ShareCoroutine()
     {
-        m_ShareScoreView.gameObject.SetActive(true);
-
         m_DataBindContext["lastScore"] = GameController.instance.score;
         m_DataBindContext["lastCoins"] = GameController.instance.coins;
         m_DataBindContext["bestScore"] = GameData.instance.bestScore;
 
         yield return new WaitForEndOfFrame();
 
-        var width = (int) m_ShareScoreView.sizeDelta.x;
-        var height = (int) m_ShareScoreView.sizeDelta.y;
-        var texture = new Texture2D(width, height, TextureFormat.RGB24, true);
-        texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        texture.Apply();
-
-#if UNITY_ANDROID
         var message = string.Format(Localization.GetText("Share Message"), GameController.instance.score.ToString("N0"),
-            "market://details?id=" + Application.bundleIdentifier);
-        AndroidSocialGate.StartShareIntent("SimpleGameTemplate", message, texture);
-#endif
-
-        m_ShareScoreView.gameObject.SetActive(false);
-
-        yield return new WaitForEndOfFrame();
+           "market://details?id=" + Application.bundleIdentifier);
+        NativeShare.ShareScreenshotWithText(message);
     }
 }
