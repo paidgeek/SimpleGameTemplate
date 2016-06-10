@@ -27,16 +27,12 @@ public class MenuController : MonoBehaviour, IEventHook
 
     public void OnAchievementsClick()
     {
-#if UNITY_ANDROID
-        GooglePlayManager.Instance.ShowAchievementsUI();
-#endif
+        Social.ShowAchievementsUI();
     }
 
     public void OnLeaderboardsClick()
     {
-#if UNITY_ANDROID
-        GooglePlayManager.Instance.ShowLeaderBoard("leaderboard_high_scores");
-#endif
+        Social.ShowLeaderboardUI();
     }
 
     public void OnTwitterClick()

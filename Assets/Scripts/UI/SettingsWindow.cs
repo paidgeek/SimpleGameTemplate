@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GooglePlayGames;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsWindow : MonoBehaviour
@@ -44,21 +45,20 @@ public class SettingsWindow : MonoBehaviour
 
     public void OnConnectClick()
     {
+        if (Social.localUser.authenticated) {
 #if UNITY_ANDROID
-        if (GooglePlayConnection.Instance.IsConnected) {
-            GooglePlusAPI.Instance.ClearDefaultAccount();
+            PlayGamesPlatform.Instance.SignOut();
+#endif
 
             OnLogInChanged();
         } else {
-            GooglePlayConnection.ActionConnectionResultReceived = result =>
+            Social.localUser.Authenticate(success =>
             {
-                if (result.IsSuccess) {
+                if (success) {
                     OnLogInChanged();
                 }
-            };
-            GooglePlayConnection.Instance.Connect();
+            });
         }
-#endif
     }
 
     private void OnQualityChanged()
@@ -81,12 +81,10 @@ public class SettingsWindow : MonoBehaviour
 
     private void OnLogInChanged()
     {
-#if UNITY_ANDROID
-        if (GooglePlayConnection.Instance.IsConnected) {
+        if (Social.localUser.authenticated) {
             m_ConnectButton.color = m_ConnectedButtonTint;
         } else {
             m_ConnectButton.color = Color.white;
         }
-#endif
     }
 }

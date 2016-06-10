@@ -7,6 +7,9 @@ public class GameOverWindow : MonoBehaviour, IEventHook
 {
     [SerializeField]
     private DataBindContext m_DataBindContext;
+    [SerializeField]
+    private float m_AdDelay;
+    private float m_LastAdTime;
 
     public void OnInvoke(EventId eventId)
     {
@@ -20,6 +23,11 @@ public class GameOverWindow : MonoBehaviour, IEventHook
             m_DataBindContext["lastCoins"] = gc.coins;
             m_DataBindContext["bestScore"] = gd.bestScore;
             m_DataBindContext["coins"] = gd.coins;
+
+            if (Time.time - m_LastAdTime >= m_AdDelay) {
+                m_LastAdTime = Time.time;
+                Ads.instance.ShowInterstitial();
+            }
         }
     }
 

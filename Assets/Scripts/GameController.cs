@@ -104,15 +104,12 @@ public class GameController : Singleton<GameController>
 
     public void ReportScore()
     {
-#if UNITY_ANDROID
-        GooglePlayManager.ActionScoreSubmited = result =>
+        Social.ReportScore(score, GooglePlayIds.leaderboard_high_scores, success =>
         {
-            if (result.IsFailed) {
+            if (!success) {
                 PlayerPrefs.SetInt("UnreportedScore", score);
                 PlayerPrefs.Save();
             }
-        };
-        GooglePlayManager.Instance.SubmitScore("leaderboard_high_scores", score);
-#endif
+        });
     }
 }

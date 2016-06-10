@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using ANMiniJSON;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class Localization
@@ -70,7 +70,7 @@ public class Localization
     private static void CreateContent()
     {
         foreach (var asset in Resources.LoadAll("Localization")) {
-            var data = (IDictionary) Json.Deserialize(asset.ToString());
+            var data = (IDictionary) JsonConvert.DeserializeObject<Dictionary<string, IDictionary>>(asset.ToString());
 
             foreach (var key in data.Keys) {
                 if (s_Language == (string) key) {
