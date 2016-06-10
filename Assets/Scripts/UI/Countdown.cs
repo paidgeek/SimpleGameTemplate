@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CountdownController : Singleton<CountdownController>
+public class Countdown : Singleton<Countdown>
 {
     [SerializeField]
     private DataBindContext m_DataBindContext;
@@ -10,7 +10,7 @@ public class CountdownController : Singleton<CountdownController>
     private int m_Timer;
     private Action m_OnDone;
 
-    public void Countdown(int seconds, Action onDone)
+    public void DoCountdown(int seconds, Action onDone)
     {
         transform.GetChild(0)
                  .gameObject.SetActive(true);

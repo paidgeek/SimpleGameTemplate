@@ -46,7 +46,6 @@ public class SettingsWindow : MonoBehaviour
     {
 #if UNITY_ANDROID
         if (GooglePlayConnection.Instance.IsConnected) {
-            GooglePlayConnection.Instance.Disconnect();
             GooglePlusAPI.Instance.ClearDefaultAccount();
 
             OnLogInChanged();

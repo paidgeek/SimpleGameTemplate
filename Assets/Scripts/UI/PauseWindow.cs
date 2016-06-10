@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseController : Singleton<PauseController>, IEventHook
+public class PauseWindow : Singleton<PauseWindow>, IEventHook
 {
     [SerializeField]
     private DataBindContext m_DataBindContext;
@@ -15,7 +15,7 @@ public class PauseController : Singleton<PauseController>, IEventHook
             Time.timeScale = 0.0f;
         } else if (eventId == EventId.ContinueGame) {
             gameObject.SetActive(false);
-            CountdownController.instance.Countdown(3, () =>
+            Countdown.instance.DoCountdown(3, () =>
             {
                 Time.timeScale = 1.0f;
             });
@@ -31,8 +31,8 @@ public class PauseController : Singleton<PauseController>, IEventHook
         var coins = GameController.instance.coins;
 
         if (score > gd.bestScore) {
-            GameController.instance.ReportScore();
             gd.bestScore = score;
+            GameController.instance.ReportScore();
         }
 
         gd.coins += coins;

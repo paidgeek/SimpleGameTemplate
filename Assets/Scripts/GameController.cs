@@ -69,8 +69,8 @@ public class GameController : Singleton<GameController>
 
         if (score > gd.bestScore) {
             isNewRecord = true;
-            ReportScore();
             gd.bestScore = score;
+            ReportScore();
         } else {
             isNewRecord = false;
         }
@@ -83,7 +83,11 @@ public class GameController : Singleton<GameController>
 
     private void OnApplicationPause(bool paused)
     {
-        if (paused && !isGameOver /*&& !m_IsShowingAd*/) {
+        if (isGameOver) {
+            return;
+        }
+
+        if (paused) {
             Pause();
         }
     }
@@ -104,7 +108,7 @@ public class GameController : Singleton<GameController>
         GooglePlayManager.ActionScoreSubmited = result =>
         {
             if (result.IsFailed) {
-                PlayerPrefs.SetString("UnreportedScore", score.ToString());
+                PlayerPrefs.SetInt("UnreportedScore", score);
                 PlayerPrefs.Save();
             }
         };

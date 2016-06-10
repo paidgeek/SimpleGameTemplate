@@ -4,6 +4,10 @@ public class MenuController : MonoBehaviour, IEventHook
 {
     [SerializeField]
     private DataBindContext m_DataBindContext;
+    [SerializeField]
+    private string m_TwitterUrl;
+    [SerializeField]
+    private string m_FacebookUrl;
 
     public void OnInvoke(EventId eventId)
     {
@@ -33,5 +37,15 @@ public class MenuController : MonoBehaviour, IEventHook
 #if UNITY_ANDROID
         GooglePlayManager.Instance.ShowLeaderBoard("leaderboard_high_scores");
 #endif
+    }
+
+    public void OnTwitterClick()
+    {
+        Application.OpenURL(m_TwitterUrl);
+    }
+
+    public void OnFacebookClick()
+    {
+        Application.OpenURL(m_FacebookUrl);
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogController : Singleton<DialogController>
+public class Dialog : Singleton<Dialog>
 {
     [SerializeField]
     private Text m_Text;
