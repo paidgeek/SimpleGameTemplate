@@ -11,7 +11,6 @@ public class InGameMenuController : MonoBehaviour, IEventHook
             gameObject.SetActive(true);
 
             m_DataBindContext["score"] = 0;
-            m_DataBindContext["coins"] = 0;
         } else if (eventId == EventId.EndGame) {
             gameObject.SetActive(false);
         } else if (eventId == EventId.PauseGame) {
@@ -26,12 +25,6 @@ public class InGameMenuController : MonoBehaviour, IEventHook
         var gc = GameController.instance;
 
         gc.onScoreChanged.AddListener(OnScoreChanged);
-        gc.onCoinsChanged.AddListener(OnCoinsChanged);
-    }
-
-    private void OnCoinsChanged(int coins)
-    {
-        m_DataBindContext["coins"] = coins;
     }
 
     private void OnScoreChanged(int score)

@@ -36,6 +36,11 @@ public class GameOverWindow : MonoBehaviour, IEventHook
         m_LastAdTime = Time.time;
     }
 
+    public void OnLeaderboardsClick()
+    {
+        Social.ShowLeaderboardUI();
+    }
+
     public void OnHomeClick()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene()
