@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using ChartboostSDK;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -14,12 +13,12 @@ public class GiftButton : MonoBehaviour
     private void OnEnable()
     {
         m_Button.SetActive(false);
-        Chartboost.cacheRewardedVideo(CBLocation.Default);
-        StartCoroutine(LoadAdCoroutine());
+        //StartCoroutine(LoadAdCoroutine());
     }
 
     public void OnClick()
     {
+        /*
         if (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.Default)) {
             return;
         }
@@ -39,33 +38,7 @@ public class GiftButton : MonoBehaviour
         } else {
             ShowChartboostAd();
         }
-    }
-
-    private void ShowUnityAd()
-    {
-        var opts = new ShowOptions();
-        opts.resultCallback = result =>
-        {
-            if (result == ShowResult.Finished) {
-                OnCompleteVideo();
-            }
-        };
-        Advertisement.Show("rewardedVideoZone", opts);
-    }
-
-    private void ShowChartboostAd()
-    {
-        Chartboost.willDisplayVideo = location =>
-        {
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
-        };
-        Chartboost.didCompleteRewardedVideo = (location, reward) =>
-        {
-            Screen.orientation = ScreenOrientation.Portrait;
-            OnCompleteVideo();
-        };
-        Chartboost.showRewardedVideo(CBLocation.Default);
-        Chartboost.cacheRewardedVideo(CBLocation.Default);
+        */
     }
 
     private void OnCompleteVideo()
@@ -74,6 +47,7 @@ public class GiftButton : MonoBehaviour
         m_DataBindContext["coins"] = GameData.instance.coins;
     }
 
+    /*
     private IEnumerator LoadAdCoroutine()
     {
         while (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.Default)) {
@@ -85,4 +59,5 @@ public class GiftButton : MonoBehaviour
         m_Reward = Mathf.Max(20, Mathf.CeilToInt(Mathf.Sqrt(GameData.instance.coins * 10)));
         m_DataBindContext["reward"] = m_Reward;
     }
+    */
 }

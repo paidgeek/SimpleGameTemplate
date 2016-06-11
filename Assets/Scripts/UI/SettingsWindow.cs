@@ -1,4 +1,4 @@
-﻿using GooglePlayGames;
+﻿//using GooglePlayGames;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,7 +47,7 @@ public class SettingsWindow : MonoBehaviour
     {
         if (Social.localUser.authenticated) {
 #if UNITY_ANDROID
-            PlayGamesPlatform.Instance.SignOut();
+            //PlayGamesPlatform.Instance.SignOut();
 #endif
 
             OnLogInChanged();

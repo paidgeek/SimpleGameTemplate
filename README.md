@@ -1,10 +1,10 @@
 # Simple Game Template
 
-A Unity template for a simple android game (iOS not tested).
+A Unity template for a simple android game.
 
 Features:
   - Google Play services
-  - Chartboost & AdMob ads
+  - Heyzap ads
   - UI with [Data binding](https://github.com/paidgeek/DataBind)
   - Score sharing
   - Premade screens (main, game paused, game over)

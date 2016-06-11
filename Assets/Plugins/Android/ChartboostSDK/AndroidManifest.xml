@@ -15,8 +15,7 @@
                   android:excludeFromRecents="true"
                   android:hardwareAccelerated="true"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-                  android:screenOrientation="landscape"
-                  android:configChanges="keyboardHidden|screenSize|orientation"/>
+                  android:configChanges="keyboardHidden|orientation|screenSize"/>
 		<!-- Required by Chartboost -->
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     </application>

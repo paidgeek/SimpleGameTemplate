@@ -205,7 +205,7 @@ namespace ChartboostSDK {
 		///   Called after an the SDK has been initialized
 		/// </summary>
 		/// <param name="status">False if initialization failed</param>
-		public static  Action<bool> didInitialize;
+		public static event Action<bool> didInitialize;
 
 		/// <summary>
 		///  Called before an interstitial will be displayed on the screen.
@@ -216,7 +216,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <returns>true if execution should proceed, false if not.</returns>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Func<CBLocation, bool> shouldDisplayInterstitial;
+		public static event Func<CBLocation, bool> shouldDisplayInterstitial;
 		
 		/// <summary>
 		///  Called after an interstitial has been displayed on the screen.
@@ -224,7 +224,7 @@ namespace ChartboostSDK {
 		///  been displayed on the screen for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didDisplayInterstitial;
+		public static event Action<CBLocation> didDisplayInterstitial;
 
 		/// <summary>
 		///   Called after an interstitial has been loaded from the Chartboost API
@@ -232,7 +232,7 @@ namespace ChartboostSDK {
 		///	  been loaded from the Chartboost API servers and cached locally for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCacheInterstitial;
+		public static event Action<CBLocation> didCacheInterstitial;
 
 		/// <summary>
 		///  Called after an interstitial has been clicked.
@@ -240,7 +240,7 @@ namespace ChartboostSDK {
 		///  "Clicked" is defined as clicking the creative interface for the interstitial.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didClickInterstitial;
+		public static event Action<CBLocation> didClickInterstitial;
 
 		/// <summary>
 		///  Called after an interstitial has been closed.
@@ -248,7 +248,7 @@ namespace ChartboostSDK {
 		///  "Closed" is defined as clicking the close interface for the interstitial.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCloseInterstitial;
+		public static event Action<CBLocation> didCloseInterstitial;
 		
 		/// <summary>
 		///  Called after an interstitial has been dismissed.
@@ -256,7 +256,7 @@ namespace ChartboostSDK {
 		///  "Dismissal" is defined as any action that removed the interstitial UI such as a click or close.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didDismissInterstitial;
+		public static event Action<CBLocation> didDismissInterstitial;
 		
 		/// <summary>
 		///   Called after an interstitial has attempted to load from the Chartboost API
@@ -265,7 +265,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
 		/// <param name="CBImpressionError">The reason for the error defined via a CBImpressionError.</param>
-		public static  Action<CBLocation,CBImpressionError> didFailToLoadInterstitial;
+		public static event Action<CBLocation,CBImpressionError> didFailToLoadInterstitial;
 		
 		/// <summary>
 		///  Called after a click is registered, but the user is not forwarded to the IOS App Store.
@@ -274,7 +274,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
 		/// <param name="CBClickError">The reason for the error defined via a CBClickError.</param>
-		public static  Action<CBLocation, CBClickError> didFailToRecordClick;
+		public static event Action<CBLocation, CBClickError> didFailToRecordClick;
 		
 		/// <summary>
 		///  Called before an "more applications" will be displayed on the screen.
@@ -285,7 +285,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <returns>true if execution should proceed, false if not.</returns>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Func<CBLocation, bool> shouldDisplayMoreApps;
+		public static event Func<CBLocation, bool> shouldDisplayMoreApps;
 
 		/// <summary>
 		///  Called after an "more applications" has been displayed on the screen.
@@ -293,7 +293,7 @@ namespace ChartboostSDK {
 		///  been displayed on the screen for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didDisplayMoreApps;
+		public static event Action<CBLocation> didDisplayMoreApps;
 
 		/// <summary>
 		///   Called after an "more applications" has been loaded from the Chartboost API
@@ -301,7 +301,7 @@ namespace ChartboostSDK {
 		///	  been loaded from the Chartboost API servers and cached locally for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCacheMoreApps;
+		public static event Action<CBLocation> didCacheMoreApps;
 
 		/// <summary>
 		///  Called after an "more applications" has been clicked.
@@ -309,7 +309,7 @@ namespace ChartboostSDK {
 		///  "Clicked" is defined as clicking the creative interface for the "more applications".
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didClickMoreApps;
+		public static event Action<CBLocation> didClickMoreApps;
 
 		/// <summary>
 		///  Called after an "more applications" has been closed.
@@ -317,7 +317,7 @@ namespace ChartboostSDK {
 		///  "Closed" is defined as clicking the close interface for the interstitial.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCloseMoreApps;
+		public static event Action<CBLocation> didCloseMoreApps;
 		
 		/// <summary>
 		///  Called after an "more applications" has been dismissed.
@@ -325,7 +325,7 @@ namespace ChartboostSDK {
 		///  "Dismissal" is defined as any action that removed the interstitial UI such as a click or close.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didDismissMoreApps;
+		public static event Action<CBLocation> didDismissMoreApps;
 
 		/// <summary>
 		///   Called after an "more applications" has attempted to load from the Chartboost API
@@ -334,7 +334,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
 		/// <param name="CBImpressionError">The reason for the error defined via a CBImpressionError.</param>
-		public static  Action<CBLocation,CBImpressionError> didFailToLoadMoreApps;
+		public static event Action<CBLocation,CBImpressionError> didFailToLoadMoreApps;
 		
 		//// <summary>
 		///  Called before a rewarded video will be displayed on the screen.
@@ -345,7 +345,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <returns>true if execution should proceed, false if not.</returns>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Func<CBLocation, bool> shouldDisplayRewardedVideo;
+		public static event Func<CBLocation, bool> shouldDisplayRewardedVideo;
 
 		/// <summary>
 		///  Called after a rewarded video has been displayed on the screen.
@@ -353,7 +353,7 @@ namespace ChartboostSDK {
 		///  been displayed on the screen for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didDisplayRewardedVideo;
+		public static event Action<CBLocation> didDisplayRewardedVideo;
 
 		/// <summary>
 		///   Called after a rewarded video has been loaded from the Chartboost API
@@ -361,7 +361,7 @@ namespace ChartboostSDK {
 		///	  been loaded from the Chartboost API servers and cached locally for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCacheRewardedVideo;
+		public static event Action<CBLocation> didCacheRewardedVideo;
 
 		/// <summary>
 		///  Called after a rewarded video has been clicked.
@@ -369,7 +369,7 @@ namespace ChartboostSDK {
 		///  "Clicked" is defined as clicking the creative interface for the rewarded video.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didClickRewardedVideo;
+		public static event Action<CBLocation> didClickRewardedVideo;
 
 		/// <summary>
 		///  Called after a rewarded video has been closed.
@@ -377,7 +377,7 @@ namespace ChartboostSDK {
 		///  "Closed" is defined as clicking the close interface for the rewarded video.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCloseRewardedVideo;
+		public static event Action<CBLocation> didCloseRewardedVideo;
 
 		// <summary>
 		///  Called after a rewarded video has been dismissed.
@@ -385,7 +385,7 @@ namespace ChartboostSDK {
 		///  "Dismissal" is defined as any action that removed the rewarded video UI such as a click or close.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didDismissRewardedVideo;
+		public static event Action<CBLocation> didDismissRewardedVideo;
 
 		/// <summary>
 		///  Called after a rewarded video has been viewed completely and user is eligible for reward.
@@ -393,7 +393,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
 		/// <param name="reward">The reward for watching the video.</param>
-		public static  Action<CBLocation,int> didCompleteRewardedVideo;
+		public static event Action<CBLocation,int> didCompleteRewardedVideo;
 
 		/// <summary>
 		///   Called after a rewarded video has attempted to load from the Chartboost API
@@ -402,7 +402,7 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
 		/// <param name="CBImpressionError">The reason for the error defined via a CBImpressionError.</param>
-		public static  Action<CBLocation,CBImpressionError> didFailToLoadRewardedVideo;
+		public static event Action<CBLocation,CBImpressionError> didFailToLoadRewardedVideo;
 
 		/// <summary>
 		///   Called after an in play ad has been loaded from the Chartboost API
@@ -410,7 +410,7 @@ namespace ChartboostSDK {
 		///	  been loaded from the Chartboost API servers and cached locally for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> didCacheInPlay;
+		public static event Action<CBLocation> didCacheInPlay;
 
 		/// <summary>
 		///   Called after an in play ad has attempted to load from the Chartboost API
@@ -419,21 +419,21 @@ namespace ChartboostSDK {
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
 		/// <param name="CBImpressionError">The reason for the error defined via a CBImpressionError.</param>
-		public static  Action<CBLocation, CBImpressionError> didFailToLoadInPlay;
+		public static event Action<CBLocation, CBImpressionError> didFailToLoadInPlay;
 
 		/// <summary>
 		///  Called just before a video will be displayed.
 		///  Implement to be notified of when a video will be displayed for a given CBLocation.
 		/// </summary>
 		/// <param name="location">The location for the Chartboost impression type.</param>
-		public static  Action<CBLocation> willDisplayVideo;
+		public static event Action<CBLocation> willDisplayVideo;
 
 		/// <summary>
 		///  Called if Chartboost SDK pauses click actions awaiting confirmation from the user.
 		///  Use this method to display any gating you would like to prompt the user for input.
 		///  Once confirmed call didPassAgeGate:(BOOL)pass to continue execution.
 		/// </summary>
-		public static  Action didPauseClickForConfirmation;
+		public static event Action didPauseClickForConfirmation;
 		
 #if UNITY_IPHONE
 		
@@ -441,7 +441,7 @@ namespace ChartboostSDK {
 		///  Called after the App Store sheet is dismissed, when displaying the embedded app sheet.
 		///  Implement to be notified of when the App Store sheet is dismissed.
 		/// </summary>
-		public static  Action didCompleteAppStoreSheetFlow;
+		public static event Action didCompleteAppStoreSheetFlow;
 #endif
 
 		/// <summary>
