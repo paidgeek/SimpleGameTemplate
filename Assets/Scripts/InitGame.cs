@@ -37,7 +37,7 @@ public class InitGame : MonoBehaviour
         }
 
 #if UNITY_ANDROID
-        PlayGamesPlatform.Instance.LoadScores(GooglePlayIds.leaderboard_high_scores, LeaderboardStart.PlayerCentered, 1,
+        PlayGamesPlatform.Instance.LoadScores(GooglePlayIds.leaderboardHighScores, LeaderboardStart.PlayerCentered, 1,
             LeaderboardCollection.Public, LeaderboardTimeSpan.AllTime, data =>
             {
                 var onlineScore = 0;
@@ -51,7 +51,7 @@ public class InitGame : MonoBehaviour
                 GameData.instance.bestScore = bestScore;
 
                 if (unreportedScore > onlineScore) {
-                    Social.ReportScore(bestScore, GooglePlayIds.leaderboard_high_scores, success =>
+                    Social.ReportScore(bestScore, GooglePlayIds.leaderboardHighScores, success =>
                     {
                         if (!success) {
                             PlayerPrefs.SetInt("UnreportedScore", bestScore);

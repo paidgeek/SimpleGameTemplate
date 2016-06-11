@@ -35,8 +35,6 @@ public class Ads : Singleton<Ads>
 
     public void ShowInterstitial()
     {
-        Debug.Log("Showing Chartboost interstitial");
-
         if (Chartboost.hasInterstitial(CBLocation.Default)) {
             Chartboost.showInterstitial(CBLocation.Default);
         }

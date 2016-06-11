@@ -104,7 +104,7 @@ public class GameController : Singleton<GameController>
 
     public void ReportScore()
     {
-        Social.ReportScore(score, GooglePlayIds.leaderboard_high_scores, success =>
+        Social.ReportScore(score, GooglePlayIds.leaderboardHighScores, success =>
         {
             if (!success) {
                 PlayerPrefs.SetInt("UnreportedScore", score);
