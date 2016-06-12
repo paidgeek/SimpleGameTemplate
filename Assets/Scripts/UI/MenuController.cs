@@ -23,13 +23,6 @@ public class MenuController : MonoBehaviour, IEventHook
         m_DataBindContext["bestScore"] = gd.bestScore;
         m_DataBindContext["gamesPlayed"] = gd.gamesPlayed;
         m_DataBindContext["coins"] = gd.coins;
-
-        Ads.instance.ShowBanner();
-    }
-
-    private void OnDisable()
-    {
-        Ads.instance.HideBanner();
     }
 
     public void OnAchievementsClick()

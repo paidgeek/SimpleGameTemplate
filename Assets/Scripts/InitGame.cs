@@ -1,19 +1,16 @@
-﻿/*
-using GooglePlayGames;
+﻿using GooglePlayGames;
 using GooglePlayGames.BasicApi;
-*/
-
 using Heyzap;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InitGame : MonoBehaviour
 {
     private void Start()
     {
         HeyzapAds.Start("71ceaa268195811d7c9ccb4a791154c8", HeyzapAds.FLAG_NO_OPTIONS);
-        HeyzapAds.ShowMediationTestSuite();
+        HZIncentivizedAd.Fetch();
 
-        /*
 #if UNITY_ANDROID
         var config = new PlayGamesClientConfiguration.Builder().Build();
         PlayGamesPlatform.InitializeInstance(config);
@@ -67,7 +64,6 @@ public class InitGame : MonoBehaviour
                     SceneManager.LoadScene("Main");
                 }
             });
-    }
-#endif*/
+#endif
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Heyzap;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -13,44 +14,33 @@ public class GiftButton : MonoBehaviour
     private void OnEnable()
     {
         m_Button.SetActive(false);
-        //StartCoroutine(LoadAdCoroutine());
+        HZIncentivizedAd.Fetch();
+        StartCoroutine(LoadAdCoroutine());
+
+        HZIncentivizedAd.AdDisplayListener listener = (adState, adTag) => {
+            if (adState == "incentivized_result_complete") {
+                GameData.instance.coins += m_Reward;
+                m_DataBindContext["coins"] = GameData.instance.coins;
+            }
+        };
+        HZIncentivizedAd.SetDisplayListener(listener);
     }
 
     public void OnClick()
     {
-        /*
-        if (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.Default)) {
+        if (!HZIncentivizedAd.IsAvailable()) {
             return;
         }
 
         m_Button.SetActive(false);
-        var unityReady = Advertisement.IsReady("rewardedVideoZone");
-        var cbReady = Chartboost.hasRewardedVideo(CBLocation.Default);
-
-        if (unityReady && cbReady) {
-            if (Random.Range(0, 2) == 0) {
-                ShowUnityAd();
-            } else {
-                ShowChartboostAd();
-            }
-        } else if (unityReady) {
-            ShowUnityAd();
-        } else {
-            ShowChartboostAd();
-        }
-        */
+        
+        HZIncentivizedAd.Show();
+        HZIncentivizedAd.Fetch();
     }
 
-    private void OnCompleteVideo()
-    {
-        GameData.instance.coins += m_Reward;
-        m_DataBindContext["coins"] = GameData.instance.coins;
-    }
-
-    /*
     private IEnumerator LoadAdCoroutine()
     {
-        while (!Advertisement.IsReady("rewardedVideoZone") && !Chartboost.hasRewardedVideo(CBLocation.Default)) {
+        while (!HZIncentivizedAd.IsAvailable()) {
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -59,5 +49,4 @@ public class GiftButton : MonoBehaviour
         m_Reward = Mathf.Max(20, Mathf.CeilToInt(Mathf.Sqrt(GameData.instance.coins * 10)));
         m_DataBindContext["reward"] = m_Reward;
     }
-    */
 }
