@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class ButtonOnClickSound : MonoBehaviour, IPointerClickHandler
+public class ButtonOnClickSound : MonoBehaviour
 {
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnClick()
     {
         SoundController.instance.Play("Click");
     }
