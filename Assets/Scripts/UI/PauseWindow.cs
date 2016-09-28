@@ -3,41 +3,38 @@ using UnityEngine.SceneManagement;
 
 public class PauseWindow : Singleton<PauseWindow>, IEventHook
 {
-    [SerializeField]
-    private DataBindContext m_DataBindContext;
+	[SerializeField]
+	private DataBindContext m_DataBindContext;
 
-    public void OnInvoke(EventId eventId)
-    {
-        if (eventId == EventId.PauseGame) {
-            gameObject.SetActive(true);
-            m_DataBindContext["score"] = GameController.instance.score;
-            m_DataBindContext["coins"] = GameController.instance.coins;
-            Time.timeScale = 0.0f;
-        } else if (eventId == EventId.ContinueGame) {
-            gameObject.SetActive(false);
-            Countdown.instance.DoCountdown(3, () =>
-            {
-                Time.timeScale = 1.0f;
-            });
-        }
-    }
+	public void OnInvoke(EventId eventId)
+	{
+		if (eventId == EventId.PauseGame) {
+			gameObject.SetActive(true);
+			m_DataBindContext["score"] = GameController.instance.score;
+			m_DataBindContext["coins"] = GameController.instance.coins;
+			Time.timeScale = 0.0f;
+		} else if (eventId == EventId.ContinueGame) {
+			gameObject.SetActive(false);
+			Countdown.instance.DoCountdown(3, () => { Time.timeScale = 1.0f; });
+		}
+	}
 
-    public void OnHomeClick()
-    {
-        Time.timeScale = 1.0f;
+	public void OnHomeClick()
+	{
+		Time.timeScale = 1.0f;
 
-        var gd = GameData.instance;
-        var score = GameController.instance.score;
-        var coins = GameController.instance.coins;
+		var gd = GameData.instance;
+		var score = GameController.instance.score;
+		var coins = GameController.instance.coins;
 
-        if (score > gd.bestScore) {
-            gd.bestScore = score;
-            GameController.instance.ReportScore();
-        }
+		if (score > gd.bestScore) {
+			gd.bestScore = score;
+			GameController.instance.ReportScore();
+		}
 
-        gd.coins += coins;
+		gd.coins += coins;
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene()
-                                           .buildIndex);
-    }
+		SceneManager.LoadScene(SceneManager.GetActiveScene()
+			.buildIndex);
+	}
 }

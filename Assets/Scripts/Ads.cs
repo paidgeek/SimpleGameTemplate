@@ -1,23 +1,60 @@
-﻿using Heyzap;
+﻿using System;
 
 public class Ads : Singleton<Ads>
 {
-    public void ShowBanner()
-    {
-        var showOptions = new HZBannerShowOptions();
-        showOptions.Position = HZBannerShowOptions.POSITION_BOTTOM;
+	public bool isRewardedVideoReady {
+		get { return AdTapsy.IsRewardedVideoReadyToShow(); }
+	}
 
-        HZBannerAd.ShowWithOptions(showOptions);
-    }
+	private void Awake()
+	{
+		AdTapsy.SetRewardedVideoPostPopupEnabled(false);
+		AdTapsy.SetRewardedVideoPrePopupEnabled(false);
+	}
 
-    public void HideBanner()
-    {
-        HZBannerAd.Hide();
-        HZBannerAd.Destroy();
-    }
+	private void OnDisable()
+	{
+		StopAllCoroutines();
+	}
 
-    public void ShowInterstitial()
-    {
-        HZInterstitialAd.Show();
-    }
+	public bool ShowInterstitial(float delay = -1.0f)
+	{
+	
+		if (AdTapsy.IsInterstitialReadyToShow()) {
+			if (delay <= 0.0f) {
+				AdTapsy.ShowInterstitial();
+			} else {
+				Invoke("ShowInterstitialInvokable", delay);
+			}
+
+			return true;
+		}
+		
+		return false;
+	}
+
+	private void ShowInterstitialInvokable()
+	{
+		AdTapsy.ShowInterstitial();
+	}
+
+	public void ShowRewardedVideo(Action<bool> onReward)
+	{
+	
+		if (AdTapsy.IsRewardedVideoReadyToShow()) {
+			AdTapsy.OnRewardEarned = zoneId =>
+			{
+				onReward.Invoke(true);
+			};
+			AdTapsy.OnAdSkipped = zoneId =>
+			{
+				onReward.Invoke(false);
+			};
+
+			AdTapsy.ShowRewardedVideo();
+		} else {
+			onReward.Invoke(false);
+		}
+		
+	}
 }

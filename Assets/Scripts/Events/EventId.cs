@@ -1,7 +1,7 @@
 ﻿public enum EventId
 {
-    StartGame,
-    EndGame,
-    PauseGame,
-    ContinueGame
+	StartGame,
+	EndGame,
+	PauseGame,
+	ContinueGame
 }

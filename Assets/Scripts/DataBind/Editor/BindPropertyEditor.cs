@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof (BindProperty))]
+[CustomEditor(typeof(BindProperty))]
 public class BindPropertyEditor : Editor
 {
 	public override void OnInspectorGUI()

@@ -6,16 +6,17 @@ using System.Runtime.InteropServices;
  * https://github.com/ChrisMaire/unity-native-sharing 
  */
 
-public class NativeShare {
+public class NativeShare
+{
 	public static string ScreenshotName = "score.png";
 
-    public static void ShareScreenshotWithText(string text)
-    {
-        string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
-        Application.CaptureScreenshot(ScreenshotName);
+	public static void ShareScreenshotWithText(string text)
+	{
+		string screenShotPath = Application.persistentDataPath + "/" + ScreenshotName;
+		Application.CaptureScreenshot(ScreenshotName);
 
-        Share(text,screenShotPath,"");
-    }
+		Share(text, screenShotPath, "");
+	}
 
 	public static void Share(string shareText, string imagePath, string url, string subject = "")
 	{

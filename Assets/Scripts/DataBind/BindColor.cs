@@ -8,7 +8,8 @@ public class BindColor : MonoBehaviour, IBindable
 	[SerializeField]
 	private string m_Key;
 
-	public string key {
+	public string key
+	{
 		get { return m_Key; }
 	}
 

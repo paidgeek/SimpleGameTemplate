@@ -48,10 +48,9 @@ public class ObservableList : ArrayList, INotifyCollectionChanged
 		collectionChanged.Invoke(m_Key);
 	}
 
-	public new object this[int index] {
-		get {
-			return base[index];
-		}
+	public new object this[int index]
+	{
+		get { return base[index]; }
 		set {
 			base[index] = value;
 			collectionChanged.Invoke(m_Key);

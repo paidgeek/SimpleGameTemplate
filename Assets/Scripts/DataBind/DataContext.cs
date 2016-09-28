@@ -11,10 +11,9 @@ public class DataContext
 		return m_ActiveBinds.ContainsKey(key);
 	}
 
-	public object this[string key] {
-		get {
-			return m_ActiveBinds[key];
-		}
+	public object this[string key]
+	{
+		get { return m_ActiveBinds[key]; }
 		set {
 			if (value == null) {
 				return;
@@ -23,7 +22,7 @@ public class DataContext
 			m_ActiveBinds[key] = value;
 
 			if (value is INotifyCollectionChanged) {
-				((INotifyCollectionChanged)value).collectionChanged += contextChanged;
+				((INotifyCollectionChanged) value).collectionChanged += contextChanged;
 			}
 
 			contextChanged(key);

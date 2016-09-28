@@ -23,7 +23,8 @@ public sealed class ObjectPool : MonoBehaviour
 
 	private bool startupPoolsCreated;
 
-	public static ObjectPool instance {
+	public static ObjectPool instance
+	{
 		get {
 			if (_instance != null) {
 				return _instance;

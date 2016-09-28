@@ -34,35 +34,42 @@ public class BindProperty : MonoBehaviour
 	[SerializeField]
 	private bool m_UpdateInEditMode;
 
-	public Component source {
+	public Component source
+	{
 		get { return m_Source; }
 		set { m_Source = value; }
 	}
 
-	public Component destination {
+	public Component destination
+	{
 		get { return m_Destination; }
 		set { m_Destination = value; }
 	}
 
-	public string sourceProperty {
+	public string sourceProperty
+	{
 		get { return m_SourceProperty; }
 		set { m_SourceProperty = value; }
 	}
 
-	public string destinationProperty {
+	public string destinationProperty
+	{
 		get { return m_DestinationProperty; }
 		set { m_DestinationProperty = value; }
 	}
 
-	public Direction direction {
+	public Direction direction
+	{
 		get { return m_Direction; }
 	}
 
-	public UpdateMethod updateMethod {
+	public UpdateMethod updateMethod
+	{
 		get { return m_Update; }
 	}
 
-	public bool updateInEditMode {
+	public bool updateInEditMode
+	{
 		get { return m_UpdateInEditMode; }
 	}
 
@@ -94,13 +101,13 @@ public class BindProperty : MonoBehaviour
 		}
 
 		if (m_CachedSourceProperty == null || m_CachedSourceProperty.Name != m_SourceProperty
-		    || m_CachedDestinationProperty == null || m_CachedDestinationProperty.Name != m_DestinationProperty) {
+			|| m_CachedDestinationProperty == null || m_CachedDestinationProperty.Name != m_DestinationProperty) {
 			Cache();
 		}
 
 		switch (m_Direction) {
 			case Direction.SourceUpdatesDestination:
-				if (m_CachedDestinationProperty.PropertyType == typeof (string)) {
+				if (m_CachedDestinationProperty.PropertyType == typeof(string)) {
 					m_CachedDestinationProperty.SetValue(m_Destination, m_CachedSourceProperty.GetValue(m_Source, null).ToString(),
 						null);
 				} else {
@@ -108,7 +115,7 @@ public class BindProperty : MonoBehaviour
 				}
 				break;
 			case Direction.DestinationUpdatesSource:
-				if (m_CachedSourceProperty.PropertyType == typeof (string)) {
+				if (m_CachedSourceProperty.PropertyType == typeof(string)) {
 					m_CachedSourceProperty.SetValue(m_Source, m_CachedDestinationProperty.GetValue(m_Destination, null).ToString(),
 						null);
 				} else {

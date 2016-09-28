@@ -4,7 +4,8 @@ public class DataBindContext : MonoBehaviour
 {
 	private DataContext m_DataContext;
 
-	public object this[string key] {
+	public object this[string key]
+	{
 		get { return m_DataContext[key]; }
 		set {
 			if (m_DataContext == null) {

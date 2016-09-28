@@ -3,8 +3,8 @@ using UnityEngine;
 
 public static class Util
 {
-    public static bool IsAppInstalled(string bundleID)
-    {
+	public static bool IsAppInstalled(string bundleID)
+	{
 #if UNITY_ANDROID
         var up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         var ca = up.GetStatic<AndroidJavaObject>("currentActivity");
@@ -23,7 +23,7 @@ public static class Util
 
         return true;
 #else
-         return false;
+		return false;
 #endif
-    }
+	}
 }
