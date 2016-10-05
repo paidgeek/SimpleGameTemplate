@@ -1,4 +1,4 @@
 ﻿public interface IModel
 {
-	object model { get; set; }
+  object model { get; set; }
 }

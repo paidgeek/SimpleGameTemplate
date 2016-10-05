@@ -1,60 +1,133 @@
 ﻿using System;
+using GoogleMobileAds.Api;
+using UnityEngine;
 
 public class Ads : Singleton<Ads>
 {
-	public bool isRewardedVideoReady {
-		get { return AdTapsy.IsRewardedVideoReadyToShow(); }
-	}
+  [SerializeField]
+  private AndroidAdIds m_AndroidAdIds;
+  [SerializeField]
+  private AdPosition m_BannerPosition;
 
-	private void Awake()
-	{
-		AdTapsy.SetRewardedVideoPostPopupEnabled(false);
-		AdTapsy.SetRewardedVideoPrePopupEnabled(false);
-	}
+  private BannerView m_BannerView;
+  private InterstitialAd m_InterstitialAd;
+  private RewardBasedVideoAd m_RewardedVideoAd;
 
-	private void OnDisable()
-	{
-		StopAllCoroutines();
-	}
+  public bool isRewardedVideoReady
+  {
+    get {
+#if UNITY_EDITOR
+      return true;
+#else
+      return m_RewardedVideoAd.IsLoaded();
+#endif
+    }
+  }
 
-	public bool ShowInterstitial(float delay = -1.0f)
-	{
-	
-		if (AdTapsy.IsInterstitialReadyToShow()) {
-			if (delay <= 0.0f) {
-				AdTapsy.ShowInterstitial();
-			} else {
-				Invoke("ShowInterstitialInvokable", delay);
-			}
+  private void Start()
+  {
+#if UNITY_ANDROID
+    m_BannerView = new BannerView(m_AndroidAdIds.bannerUnitId, AdSize.Banner, m_BannerPosition);
+    m_InterstitialAd = new InterstitialAd(m_AndroidAdIds.interstitialUnitId);
+    m_RewardedVideoAd = RewardBasedVideoAd.Instance;
 
-			return true;
-		}
-		
-		return false;
-	}
+    m_RewardedVideoAd.OnAdFailedToLoad = (sender, args) =>
+    {
+      LoadRewardedVideo();
+    };
+#endif
 
-	private void ShowInterstitialInvokable()
-	{
-		AdTapsy.ShowInterstitial();
-	}
+    LoadInterstitial();
+    LoadRewardedVideo();
+  }
 
-	public void ShowRewardedVideo(Action<bool> onReward)
-	{
-	
-		if (AdTapsy.IsRewardedVideoReadyToShow()) {
-			AdTapsy.OnRewardEarned = zoneId =>
-			{
-				onReward.Invoke(true);
-			};
-			AdTapsy.OnAdSkipped = zoneId =>
-			{
-				onReward.Invoke(false);
-			};
+  private void OnDisable()
+  {
+    StopAllCoroutines();
+  }
 
-			AdTapsy.ShowRewardedVideo();
-		} else {
-			onReward.Invoke(false);
-		}
-		
-	}
+  public void ShowBanner()
+  {
+    var request = new AdRequest.Builder().Build();
+    m_BannerView.LoadAd(request);
+  }
+
+  public void HideBanner()
+  {
+    m_BannerView.Hide();
+  }
+
+  private void LoadInterstitial()
+  {
+    var request = new AdRequest.Builder().Build();
+    m_InterstitialAd.LoadAd(request);
+  }
+
+  public bool ShowInterstitial(float delay = -1.0f)
+  {
+    if (m_InterstitialAd.IsLoaded()) {
+      if (delay <= 0.0f) {
+        m_InterstitialAd.Show();
+      } else {
+        Invoke("ShowInterstitialInvokable", delay);
+      }
+
+      LoadInterstitial();
+      return true;
+    }
+
+    LoadInterstitial();
+    return false;
+  }
+
+  private void ShowInterstitialInvokable()
+  {
+    m_InterstitialAd.Show();
+    LoadInterstitial();
+  }
+
+  public void ShowRewardedVideo(Action<bool> onComplete)
+  {
+#if UNITY_EDITOR
+    onComplete(true);
+#else
+    if (m_RewardedVideoAd.IsLoaded()) {
+      m_RewardedVideoAd.OnAdClosed = (sender, args) =>
+      {
+        onComplete(false);
+      };
+      m_RewardedVideoAd.OnAdRewarded = (sender, reward) =>
+      {
+        onComplete(true);
+      };
+
+      m_RewardedVideoAd.Show();
+    } else {
+      onComplete(false);
+    }
+#endif
+  }
+
+  private void LoadRewardedVideo()
+  {
+#if UNITY_ANDROID
+    var request = new AdRequest.Builder().Build();
+    m_RewardedVideoAd.LoadAd(request, m_AndroidAdIds.rewardedVideoUnitId);
+#endif
+  }
+
+  protected new void OnDestroy()
+  {
+    base.OnDestroy();
+    m_BannerView.Destroy();
+    m_InterstitialAd.Destroy();
+  }
+
+  [Serializable]
+  private struct AndroidAdIds
+  {
+    public string bannerUnitId;
+    public string interstitialUnitId;
+    public string rewardedVideoUnitId;
+  }
 }

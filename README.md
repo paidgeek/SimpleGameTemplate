@@ -4,7 +4,7 @@ A Unity template for a simple android game.
 
 Features:
   - Google Play services
-  - AdTapsy Ad mediation
+  - Admob ads (with rewarded video mediation)
   - UI with [Data binding](https://github.com/paidgeek/DataBind)
   - Score sharing
   - Premade screens (main, game paused, game over)

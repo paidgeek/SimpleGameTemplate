@@ -2,5 +2,5 @@
 
 public interface INotifyCollectionChanged
 {
-	event Action<string> collectionChanged;
+  event Action<string> collectionChanged;
 }

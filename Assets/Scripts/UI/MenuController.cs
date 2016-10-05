@@ -2,54 +2,54 @@
 
 public class MenuController : MonoBehaviour, IEventHook
 {
-	[SerializeField]
-	private DataBindContext m_DataBindContext;
-	[SerializeField]
-	private string m_TwitterUserId;
-	[SerializeField]
-	private string m_FacebookPageId;
+  [SerializeField]
+  private DataBindContext m_DataBindContext;
+  [SerializeField]
+  private string m_TwitterUserId;
+  [SerializeField]
+  private string m_FacebookPageId;
 
-	public void OnInvoke(EventId eventId)
-	{
-		if (eventId == EventId.StartGame) {
-			gameObject.SetActive(false);
-		}
-	}
+  public void OnInvoke(EventId eventId)
+  {
+    if (eventId == EventId.StartGame) {
+      gameObject.SetActive(false);
+    }
+  }
 
-	private void OnEnable()
-	{
-		var gd = GameData.instance;
+  private void OnEnable()
+  {
+    var gd = GameData.instance;
 
-		m_DataBindContext["bestScore"] = gd.bestScore;
-		m_DataBindContext["gamesPlayed"] = gd.gamesPlayed;
-		m_DataBindContext["coins"] = gd.coins;
-	}
+    m_DataBindContext["bestScore"] = gd.bestScore;
+    m_DataBindContext["gamesPlayed"] = gd.gamesPlayed;
+    m_DataBindContext["coins"] = gd.coins;
+  }
 
-	public void OnAchievementsClick()
-	{
-		Social.ShowAchievementsUI();
-	}
+  public void OnAchievementsClick()
+  {
+    Social.ShowAchievementsUI();
+  }
 
-	public void OnLeaderboardsClick()
-	{
-		Social.ShowLeaderboardUI();
-	}
+  public void OnLeaderboardsClick()
+  {
+    Social.ShowLeaderboardUI();
+  }
 
-	public void OnTwitterClick()
-	{
-		if (Util.IsAppInstalled("com.twitter.android")) {
-			Application.OpenURL("twitter://user?user_id=" + m_TwitterUserId);
-		} else {
-			Application.OpenURL("https://twitter.com/intent/user?user_id=" + m_TwitterUserId);
-		}
-	}
+  public void OnTwitterClick()
+  {
+    if (Util.IsAppInstalled("com.twitter.android")) {
+      Application.OpenURL("twitter://user?user_id=" + m_TwitterUserId);
+    } else {
+      Application.OpenURL("https://twitter.com/intent/user?user_id=" + m_TwitterUserId);
+    }
+  }
 
-	public void OnFacebookClick()
-	{
-		if (Util.IsAppInstalled("com.facebook.katana")) {
-			Application.OpenURL("fb://page/" + m_FacebookPageId);
-		} else {
-			Application.OpenURL("https://www.facebook.com/" + m_FacebookPageId);
-		}
-	}
+  public void OnFacebookClick()
+  {
+    if (Util.IsAppInstalled("com.facebook.katana")) {
+      Application.OpenURL("fb://page/" + m_FacebookPageId);
+    } else {
+      Application.OpenURL("https://www.facebook.com/" + m_FacebookPageId);
+    }
+  }
 }

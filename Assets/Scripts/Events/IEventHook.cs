@@ -1,4 +1,4 @@
 ﻿public interface IEventHook
 {
-	void OnInvoke(EventId eventId);
+  void OnInvoke(EventId eventId);
 }
