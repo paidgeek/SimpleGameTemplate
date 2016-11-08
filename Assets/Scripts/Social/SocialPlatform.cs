@@ -39,4 +39,39 @@ public static class SocialPlatform
       callback(success);
     });
   }
+
+
+  public static void CompleteAchievement(string achievementId, Action<bool> callback = null)
+  {
+#if UNITY_ANDROID
+    PlayGamesPlatform.Instance.ReportProgress(achievementId, 100.0, callback);
+#endif
+  }
+
+  public static void ShowLeaderboard(string leaderboardId)
+  {
+#if UNITY_ANDROID
+    PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardId);
+#endif
+  }
+
+  public static void ShowAchievements()
+  {
+    Social.ShowAchievementsUI();
+  }
+
+  public static void CheckAchievements(int score)
+  {
+    Action<bool> callback = success => {
+      if (!success) {
+        PlayerPrefs.SetInt("ReportAchievementFailed", 1);
+        PlayerPrefs.Save();
+      }
+    };
+
+    if (!PlayGamesPlatform.Instance.IsAuthenticated()) {
+      callback(false);
+      return;
+    }
+  }
 }

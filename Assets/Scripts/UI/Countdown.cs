@@ -19,6 +19,13 @@ public class Countdown : Singleton<Countdown>
     StartCoroutine(CountdownCoroutine());
   }
 
+  public void CancelCountdown()
+  {
+    transform.GetChild(0)
+       .gameObject.SetActive(false);
+    StopAllCoroutines();
+  }
+
   private IEnumerator CountdownCoroutine()
   {
     while (m_Timer > 0) {

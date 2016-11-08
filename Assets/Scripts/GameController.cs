@@ -74,11 +74,17 @@ public class GameController : Singleton<GameController>
     if (score > gd.bestScore) {
       isNewRecord = true;
       gd.bestScore = score;
-      ReportScore();
+      SocialPlatform.ReportScore(score, success => {
+        if (!success) {
+          PlayerPrefs.SetInt("UnreportedScore", score);
+          PlayerPrefs.Save();
+        }
+      });
     } else {
       isNewRecord = false;
     }
 
+    SocialPlatform.CheckAchievements(score);
     gd.coins += m_Coins;
     gd.gamesPlayed++;
 
@@ -104,16 +110,5 @@ public class GameController : Singleton<GameController>
   public void Continue()
   {
     m_EventDispatcher.Invoke(EventId.ContinueGame);
-  }
-
-  public void ReportScore()
-  {
-    Social.ReportScore(score, GooglePlayIds.leaderboard_high_scores, success =>
-    {
-      if (!success) {
-        PlayerPrefs.SetInt("UnreportedScore", score);
-        PlayerPrefs.Save();
-      }
-    });
   }
 }

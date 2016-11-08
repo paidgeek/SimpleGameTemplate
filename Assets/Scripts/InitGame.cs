@@ -34,6 +34,12 @@ public class InitGame : MonoBehaviour
       var bestScore = Mathf.Max(unreportedScore, Mathf.Max(score, prefsScore));
       GameData.instance.bestScore = bestScore;
 
+      if (PlayerPrefs.GetInt("ReportAchievementFailed", 0) == 1) {
+        PlayerPrefs.DeleteKey("ReportAchievementFailed");
+        PlayerPrefs.Save();
+        SocialPlatform.CheckAchievements(bestScore);
+      }
+
       if (unreportedScore > score) {
         SocialPlatform.ReportScore(bestScore, success =>
         {
