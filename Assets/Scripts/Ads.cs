@@ -1,6 +1,7 @@
 ﻿using System;
 using GoogleMobileAds.Api;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Ads : Singleton<Ads>
 {
@@ -86,24 +87,24 @@ public class Ads : Singleton<Ads>
     LoadInterstitial();
   }
 
-  public void ShowRewardedVideo(Action<bool> onComplete)
+  public void ShowRewardedVideo(UnityAction<bool> onComplete)
   {
 #if UNITY_EDITOR
-    onComplete(true);
+    onComplete.Invoke(true);
 #else
     if (m_RewardedVideoAd.IsLoaded()) {
       m_RewardedVideoAd.OnAdClosed = (sender, args) =>
       {
-        onComplete(false);
+        onComplete.Invoke(false);
       };
       m_RewardedVideoAd.OnAdRewarded = (sender, reward) =>
       {
-        onComplete(true);
+        onComplete.Invoke(true);
       };
 
       m_RewardedVideoAd.Show();
     } else {
-      onComplete(false);
+      onComplete.Invoke(false);
     }
 #endif
   }

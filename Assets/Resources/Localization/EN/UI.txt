@@ -1,0 +1,14 @@
+Score: Score
+BestScore: Best score
+GamesPlayed: Games played
+RateGame: Rate Game
+GameOver: Game Over
+GamePaused: Game Paused
+Sound: Sound
+HighQuality: High Quality
+GooglePlay: Google Play
+Version: Version
+Settings: Settings
+Shop: Shop
+ShareMessage: YAY! I scored {score} in #SimpleGameTemplate! Can you beat my score? {storeLink}
+TapToPlay: TapToPlay

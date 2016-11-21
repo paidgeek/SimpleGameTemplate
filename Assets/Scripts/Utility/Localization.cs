@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text;
 using UnityEngine;
 
 public class Localization
 {
-  private static readonly IDictionary<string, string> s_Content = new Dictionary<string, string>();
-  private static string s_Language = "en";
+  private static IDictionary<string, string> s_Content;
+  private static string s_Language = "EN";
 
   private static string Language
   {
@@ -24,7 +24,7 @@ public class Localization
   private static IDictionary<string, string> Content
   {
     get {
-      if (s_Content == null || s_Content.Count == 0) {
+      if (s_Content == null) {
         CreateContent();
       }
 
@@ -34,10 +34,6 @@ public class Localization
 
   public static string GetText(string key)
   {
-#if UNITY_EDITOR
-    CreateContent();
-#endif
-
     var result = "";
     Content.TryGetValue(key, out result);
 
@@ -69,17 +65,31 @@ public class Localization
 
   private static void CreateContent()
   {
-    foreach (var asset in Resources.LoadAll("Localization")) {
-      var data = (IDictionary) JsonConvert.DeserializeObject<Dictionary<string, IDictionary>>(asset.ToString());
+    s_Content = new Dictionary<string, string>();
 
-      foreach (var key in data.Keys) {
-        if (s_Language == (string) key) {
-          var vals = (IDictionary) data[key];
+    var assets = Resources.LoadAll("Localization/" + s_Language);
+    foreach (var asset in assets) {
+      var source = (TextAsset) asset;
+      ParseLocalization(Encoding.UTF8.GetString(source.bytes));
+    }
+  }
 
-          foreach (var valKey in vals.Keys) {
-            s_Content[(string) valKey] = (string) vals[valKey];
-          }
-        }
+  private static void ParseLocalization(string source)
+  {
+    var lines = source.Split(new[] {
+      "\n",
+      "\r"
+    }, StringSplitOptions.RemoveEmptyEntries);
+
+    for (var i = 0; i < lines.Length; i++) {
+      var line = lines[i].Trim();
+
+      if (!line.StartsWith("#") && !string.IsNullOrEmpty(line)) {
+        var keyEnd = line.IndexOf(':');
+        var key = line.Substring(0, keyEnd).Trim();
+        var value = line.Substring(keyEnd + 1).Trim();
+
+        s_Content[key] = value;
       }
     }
   }

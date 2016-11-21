@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public static class Util
+public static class Utility
 {
   public static bool IsAppInstalled(string bundleID)
   {

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Dialog : Singleton<Dialog>
@@ -7,16 +8,16 @@ public class Dialog : Singleton<Dialog>
   private Text m_Text;
   [SerializeField]
   private Text[] m_ButtonTexts;
-  private System.Action[] m_Actions;
+  private UnityAction[] m_Actions;
 
-  public void Show(string text, string[] buttons, System.Action[] actions)
+  public void Show(string text, string[] buttons, UnityAction[] actions)
   {
     if (buttons.Length == 0 || buttons.Length != actions.Length) {
       Debug.LogError("Invalid button count");
       return;
     }
 
-    for (int i = 0; i < m_ButtonTexts.Length; i++) {
+    for (var i = 0; i < m_ButtonTexts.Length; i++) {
       m_ButtonTexts[i].transform.parent.gameObject.SetActive(i < buttons.Length);
     }
     gameObject.SetActive(true);
@@ -24,7 +25,7 @@ public class Dialog : Singleton<Dialog>
     m_Text.text = text;
     m_Actions = actions;
 
-    for (int i = 0; i < buttons.Length; i++) {
+    for (var i = 0; i < buttons.Length; i++) {
       m_ButtonTexts[i].text = buttons[i];
     }
   }

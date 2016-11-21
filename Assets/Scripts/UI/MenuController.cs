@@ -37,7 +37,7 @@ public class MenuController : MonoBehaviour, IEventHook
 
   public void OnTwitterClick()
   {
-    if (Util.IsAppInstalled("com.twitter.android")) {
+    if (Utility.IsAppInstalled("com.twitter.android")) {
       Application.OpenURL("twitter://user?user_id=" + m_TwitterUserId);
     } else {
       Application.OpenURL("https://twitter.com/intent/user?user_id=" + m_TwitterUserId);
@@ -46,7 +46,7 @@ public class MenuController : MonoBehaviour, IEventHook
 
   public void OnFacebookClick()
   {
-    if (Util.IsAppInstalled("com.facebook.katana")) {
+    if (Utility.IsAppInstalled("com.facebook.katana")) {
       Application.OpenURL("fb://page/" + m_FacebookPageId);
     } else {
       Application.OpenURL("https://www.facebook.com/" + m_FacebookPageId);

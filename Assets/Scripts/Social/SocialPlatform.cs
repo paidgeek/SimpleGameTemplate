@@ -1,5 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 #if UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -17,7 +17,14 @@ public static class SocialPlatform
 #endif
   }
 
-  public static void LoadMyScore(Action<int> callback)
+  public static void SignOut()
+  {
+#if UNITY_ANDROID
+    PlayGamesPlatform.Instance.SignOut();
+#endif
+  }
+
+  public static void LoadMyScore(UnityAction<int> callback)
   {
 #if UNITY_ANDROID
     PlayGamesPlatform.Instance.LoadScores(GooglePlayIds.leaderboard_high_scores, LeaderboardStart.PlayerCentered, 1,
@@ -32,7 +39,7 @@ public static class SocialPlatform
 #endif
   }
 
-  public static void ReportScore(int score, Action<bool> callback)
+  public static void ReportScore(int score, UnityAction<bool> callback)
   {
     Social.ReportScore(score, GooglePlayIds.leaderboard_high_scores, success =>
     {
@@ -40,11 +47,15 @@ public static class SocialPlatform
     });
   }
 
-
-  public static void CompleteAchievement(string achievementId, Action<bool> callback = null)
+  public static void CompleteAchievement(string achievementId, UnityAction<bool> callback = null)
   {
 #if UNITY_ANDROID
-    PlayGamesPlatform.Instance.ReportProgress(achievementId, 100.0, callback);
+    PlayGamesPlatform.Instance.ReportProgress(achievementId, 100.0, success =>
+    {
+      if (callback != null) {
+        callback(success);
+      }
+    });
 #endif
   }
 
@@ -62,7 +73,8 @@ public static class SocialPlatform
 
   public static void CheckAchievements(int score)
   {
-    Action<bool> callback = success => {
+    UnityAction<bool> callback = success =>
+    {
       if (!success) {
         PlayerPrefs.SetInt("ReportAchievementFailed", 1);
         PlayerPrefs.Save();
@@ -71,7 +83,6 @@ public static class SocialPlatform
 
     if (!PlayGamesPlatform.Instance.IsAuthenticated()) {
       callback(false);
-      return;
     }
   }
 }

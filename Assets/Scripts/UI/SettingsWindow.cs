@@ -46,7 +46,7 @@ public class SettingsWindow : MonoBehaviour
   {
     if (Social.localUser.authenticated) {
 #if UNITY_ANDROID
-      //PlayGamesPlatform.Instance.SignOut();
+      SocialPlatform.SignOut();
 #endif
 
       OnLogInChanged();

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Countdown : Singleton<Countdown>
 {
@@ -8,9 +8,9 @@ public class Countdown : Singleton<Countdown>
   private DataBindContext m_DataBindContext;
 
   private int m_Timer;
-  private Action m_OnDone;
+  private UnityAction m_OnDone;
 
-  public void DoCountdown(int seconds, Action onDone)
+  public void DoCountdown(int seconds, UnityAction onDone)
   {
     transform.GetChild(0)
       .gameObject.SetActive(true);
@@ -22,7 +22,7 @@ public class Countdown : Singleton<Countdown>
   public void CancelCountdown()
   {
     transform.GetChild(0)
-       .gameObject.SetActive(false);
+      .gameObject.SetActive(false);
     StopAllCoroutines();
   }
 
@@ -38,7 +38,7 @@ public class Countdown : Singleton<Countdown>
 
     transform.GetChild(0)
       .gameObject.SetActive(false);
-    m_OnDone();
+    m_OnDone.Invoke();
   }
 
   private IEnumerator WaitForRealSeconds(float time)

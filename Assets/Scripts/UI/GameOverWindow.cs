@@ -75,9 +75,9 @@ public class GameOverWindow : MonoBehaviour, IEventHook
     yield return new WaitForEndOfFrame();
 
 #if UNITY_ANDROID
-    var message = string.Format(Localization.GetText("Share Message"),
-      GameController.instance.score.ToString("N0"),
-      "https://play.google.com/store/apps/details?id=" + Application.bundleIdentifier);
+    var message = Localization.GetText("Share Message");
+    message = message.Replace("{score}", GameController.instance.score.ToString("N0"));
+    message = message.Replace("{storeLink}", "https://play.google.com/store/apps/details?id=" + Application.bundleIdentifier);
 #endif
     NativeShare.ShareScreenshotWithText(message);
   }
