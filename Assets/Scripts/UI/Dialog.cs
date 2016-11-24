@@ -8,11 +8,11 @@ public class Dialog : Singleton<Dialog>
   private Text m_Text;
   [SerializeField]
   private Text[] m_ButtonTexts;
-  private UnityAction[] m_Actions;
+  private UnityAction<int> m_Action;
 
-  public void Show(string text, string[] buttons, UnityAction[] actions)
+  public void Show(string text, string[] buttons, UnityAction<int> action)
   {
-    if (buttons.Length == 0 || buttons.Length != actions.Length) {
+    if (buttons.Length == 0) {
       Debug.LogError("Invalid button count");
       return;
     }
@@ -23,7 +23,7 @@ public class Dialog : Singleton<Dialog>
     gameObject.SetActive(true);
 
     m_Text.text = text;
-    m_Actions = actions;
+    m_Action = action;
 
     for (var i = 0; i < buttons.Length; i++) {
       m_ButtonTexts[i].text = buttons[i];
@@ -34,8 +34,8 @@ public class Dialog : Singleton<Dialog>
   {
     gameObject.SetActive(false);
 
-    if (m_Actions[button] != null) {
-      m_Actions[button].Invoke();
+    if (m_Action != null) {
+      m_Action.Invoke(button);
     }
   }
 }
